@@ -4,30 +4,30 @@ import edu.princeton.cs.algs4.Bag;
 
 public class Digraph
 {
-	private final int V;
-	private int E;
+	private final int vertices;
+	private int edges;
 	private Bag<Integer>[] adj;
 	
 	public Digraph(int V)
 	{
-		this.V = V;
-		this.E = 0;
+		this.vertices = V;
+		this.edges = 0;
 		adj = (Bag<Integer>[]) new Bag[V];
 		for (int v = 0; v < V; v++)
 			adj[v] = new Bag<Integer>();
 	}
 	
-	public int V() {
-		return V; 
+	public int numOfVertices() {
+		return vertices; 
 	}
 	
-	public int E() {
-		return E;
+	public int numOfEdges() {
+		return edges;
 		}
 	
 	public void addEdge(int v, int w){
 		adj[v].add(w);
-		E++;
+		edges++;
 	}
 	
 	public Iterable<Integer> adj(int v)	{
@@ -35,8 +35,8 @@ public class Digraph
 	}
 	
 	public Digraph reverse(){
-		Digraph R = new Digraph(V);
-		for (int v = 0; v < V; v++)
+		Digraph R = new Digraph(vertices);
+		for (int v = 0; v < vertices; v++)
 			for (int w : adj(v))
 				R.addEdge(w, v);
 		return R;
