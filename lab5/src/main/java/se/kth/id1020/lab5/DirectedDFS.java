@@ -22,6 +22,7 @@ public class DirectedDFS{
 	public DirectedDFS(Digraph G, Iterable<Integer> sources){
 		markedArray = new boolean[G.numOfVertices()];
 		
+		//Add all edges to the graph.
 		for (int s : sources)
 		{
 			if (!markedArray[s])

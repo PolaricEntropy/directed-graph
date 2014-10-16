@@ -10,7 +10,7 @@ public class Driver
     	//Read the file from the arguments.
     	In fs = new In(args[0]);
     	
-    	//Create a graph with the number of vertecies.
+    	//Create a graph with the number of vertices.
     	Digraph G = new Digraph(fs.readInt());
     	
     	//The amount of edges we should add.
@@ -22,7 +22,9 @@ public class Driver
 
     	//searchRecursive(args, G);
     	
-    	searchNonRecursive(args, G);
+    	//searchNonRecursive(args, G);
+    	
+    	smallestVertex(G);
     }
     
     public static void searchRecursive(String[] args, Digraph G){
@@ -30,6 +32,7 @@ public class Driver
     	//Read our search file.
     	In fs = new In(args[1]);
     	
+    	//Search for each thing in the file, line by line.
     	while (fs.hasNextLine())
     	{
     		int vertex = fs.readInt();
@@ -37,20 +40,20 @@ public class Driver
     		StdOut.println("Searching for: " + vertex);
     		
     		//Create a new search.
-        	DirectedDFS reachable = new DirectedDFS(G, vertex);
+        	DirectedDFS search = new DirectedDFS(G, vertex);
         	
         	for (int v = 0; v < G.numOfVertices(); v++)
-        		if (reachable.marked(v)) StdOut.print(v + " ");
+        		if (search.marked(v)) StdOut.print(v + " ");
         	
         	StdOut.println();
-    	}
-    	
+    	} 	
     }
     
     public static void searchNonRecursive(String[] args, Digraph G){
     	//Read our search file.
     	In fs = new In(args[1]);
     	
+    	//Search for each thing in the file, line by line.
     	while (fs.hasNextLine())
     	{
     		int vertex = fs.readInt();
@@ -58,12 +61,12 @@ public class Driver
     		StdOut.println("Searching for: " + vertex);
     		
     		//Create a new search.
-    		DirectedDFSStack reachable = new DirectedDFSStack(G, vertex);
+    		DirectedDFSStack search = new DirectedDFSStack(G, vertex);
         	
     		for (int v = 0; v < G.numOfVertices(); v++) {
-    			if (reachable.hasPathTo(v)) {
+    			if (search.hasPathTo(v)) {
     				StdOut.printf("%d to %d:  ", vertex, v);
-    				for (int x : reachable.pathTo(v)) {
+    				for (int x : search.pathTo(v)) {
     					if (x == vertex) StdOut.print(x);
     					else        StdOut.print("-" + x);
     				}
@@ -75,5 +78,21 @@ public class Driver
     			}
     		}
     	}
+    }
+    
+    public static void smallestVertex(Digraph G){
+    	
+    	minVertexSearch search = new minVertexSearch(G);
+    	
+    	Integer[] minList = search.getMin();
+    	
+    	for(int i = 0; i < minList.length; i++)
+		{
+    		//If list element is null, then that vertex is not pointing to anything, thus it doesn't have a min value.
+			if(minList[i] != null)
+				StdOut.printf("%s -> %s\n", i, minList[i]);	
+		}
+    	
+    	StdOut.println(search.toString());
     }
 }
