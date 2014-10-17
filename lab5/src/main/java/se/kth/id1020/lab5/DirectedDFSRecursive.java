@@ -18,7 +18,7 @@ public class DirectedDFSRecursive implements DirectedDFS{
 	}
 	
 	/**
-	 * Search all connected vertices of this vertex to see if we can.
+	 * Search all connected vertices of this vertex to see what we can reach.
 	 * @param curVertex The current vertex to search from.
 	 */
 	private void dfs(int curVertex){

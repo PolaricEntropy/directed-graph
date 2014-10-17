@@ -21,13 +21,17 @@ public class DirectedDFSStack implements DirectedDFS {
 		dfs(sourceVertex);
 	}
 	
+	/**
+	 * Search all connected vertices of this vertex to see what we can reach.
+	 * @param curVertex The current vertex to search from.
+	 */
 	public void dfs(int curVertex){
 		//Push the source onto the stack.
 		stack.push(curVertex);
 		
 		while (!stack.isEmpty())
 		{
-			//Do the next vertex that we said we were going to do.
+			//Do the next vertex that's on the stack.
 			curVertex = stack.pop();
 			
 			//If we haven't done this vertex yet.
@@ -35,6 +39,7 @@ public class DirectedDFSStack implements DirectedDFS {
 			{
 				markedArray[curVertex] = true;
 				
+				//Push all adjacent vertices onto the stack so we will do them later. 
 				for (int vertex : G.adj(curVertex))
 					stack.push(vertex);
 			}
