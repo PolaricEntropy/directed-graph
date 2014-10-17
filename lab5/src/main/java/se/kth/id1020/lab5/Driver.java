@@ -1,5 +1,7 @@
 package se.kth.id1020.lab5;
 
+import java.util.ArrayList;
+
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.StdOut;
 
@@ -20,72 +22,68 @@ public class Driver
     	for(int i = 0; i < edges; i++)
     		G.addEdge(fs.readInt(), fs.readInt());
 
-    	//searchRecursive(args, G);
+    	//Close the stream to allow other stuff to use the file since we are done with it.
+    	fs.close();
     	
-    	searchNonRecursive(args, G);
-    	
-    	//smallestVertex(G);
+    	search(args, G);
+    	StdOut.println("\nSmallest index of each vertex:");
+    	smallestVertex(G);
     }
     
-    public static void searchRecursive(String[] args, Digraph G){
+    public static void search(String[] args, Digraph G){
     	
     	//Read our search file.
     	In fs = new In(args[1]);
     	
-    	//Search for each thing in the file, line by line.
+    	ArrayList<Integer> searchVertices = new ArrayList<Integer>();
+    	
+    	//Get each vertex in the file and add to our searchList.
     	while (fs.hasNextLine())
     	{
-    		int vertex = fs.readInt();
-    		
+    		searchVertices.add(fs.readInt());
+    	}	
+    	
+    	//Close the stream to allow other stuff to use the file since we are done with it.
+    	fs.close();
+    	
+    	DirectedDFS search;
+    	
+    	StdOut.println("Search with recursive function:\n");
+    	
+    	for(int vertex : searchVertices)
+    	{
     		StdOut.println("Reachable vertices from: " + vertex);
     		
     		//Create a new search and search for the vertex.
-        	DirectedDFS search = new DirectedDFS(G, vertex);
+        	search = new DirectedDFSRecursive(G, vertex);
         	
-        	//Check if each vertex in the graph was reachable from the one we searched for.
+    		//Check if each vertex in the graph was reachable from the one we searched for.
         	for (int v = 0; v < G.numOfVertices(); v++)
         	{
         		if (search.marked(v))
         			StdOut.print(v + " ");
         	}
         	
-        	StdOut.println();
-    	} 	
-    }
-    
-    public static void searchNonRecursive(String[] args, Digraph G){
+            StdOut.println();	
+    	}
     	
-    	//Read our search file.
-    	In fs = new In(args[1]);
+    	StdOut.println("\nSearch with non-recursive function:\n");
     	
-    	//Search for each thing in the file, line by line.
-    	while (fs.hasNextLine())
+    	for(int vertex : searchVertices)
     	{
-    		int vertex = fs.readInt();
+    		StdOut.println("Reachable vertices from: " + vertex);
     		
-    		StdOut.println("Searching for: " + vertex);
-    		
-    		//Create a new search.
-    		DirectedDFSStack search = new DirectedDFSStack(G, vertex);
+    		//Create a new search and search for the vertex.
+        	search = new DirectedDFSStack(G, vertex);
         	
-    		//Check each vertex in the graph.
-    		for (int v = 0; v < G.numOfVertices(); v++)
-    		{
-    			if (search.hasPathTo(v))
-    			{
-    				StdOut.printf("%d to %d:  ", vertex, v);
-    				for (int x : search.pathTo(v))
-    				{
-    					if (x == vertex)
-    						StdOut.print(x);
-    					else
-    						StdOut.print("-" + x);
-    				}
-    				StdOut.println();
-    			}
-    			else
-    				StdOut.printf("%d to %d:  not connected\n", vertex, v);
-    		}
+    		//Check if each vertex in the graph was reachable from the one we searched for.
+        	for (int v = 0; v < G.numOfVertices(); v++)
+        	{
+        		if (search.marked(v))
+        			StdOut.print(v + " ");
+        	}
+        	
+            StdOut.println();
     	}
     }
     

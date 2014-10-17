@@ -2,76 +2,52 @@ package se.kth.id1020.lab5;
 
 import edu.princeton.cs.algs4.Stack;
 
-public class DirectedDFSStack {
+public class DirectedDFSStack implements DirectedDFS {
 	
-	private boolean[] marked;  // marked[v] = true if v is reachable from s
-	private int[] lastVertex;  // lastVertex[v] = last vertex on path from s to v
-	private final int sourceVertex;
+	private boolean[] markedArray;
+	private Stack<Integer> stack;
 	private final Digraph G;
 
 	/**
 	 * Does a search in the graph what vertices the specified vertex can reach.
 	 * @param G Graph to search.
-	 * @param s Vertex to search for.
+	 * @param sourceVertex Vertex to search for.
 	 */
-	public DirectedDFSStack(Digraph G, int s) {
-		marked = new boolean[G.numOfVertices()];
-		lastVertex = new int[G.numOfVertices()];
+	public DirectedDFSStack(Digraph G, int sourceVertex) {
+		markedArray = new boolean[G.numOfVertices()];
+		stack = new Stack<Integer>();
 		this.G = G;
-		this.sourceVertex = s;
 		
-		dfs(s);
+		dfs(sourceVertex);
 	}
-
-	/**
-	 * Search all connected vertices of this vertex to see if we can.
-	 * @param vertexToSearch The vertex to search for.
-	 */
-	public void dfs(int vertexToSearch) { 
-		marked[vertexToSearch] = true;
+	
+	public void dfs(int curVertex){
+		//Push the source onto the stack.
+		stack.push(curVertex);
 		
-		//Search all vertices connected to this vertex.
-		for (int w : G.adj(vertexToSearch))
+		while (!stack.isEmpty())
 		{
-			//If we haven't been here before.
-			if (!marked[w])
+			//Do the next vertex that we said we were going to do.
+			curVertex = stack.pop();
+			
+			//If we haven't done this vertex yet.
+			if (!markedArray[curVertex])
 			{
-				//Set the connected vertex's lastVertex/edge to the vertexToSearch so we know where we came from.
-				lastVertex[w] = vertexToSearch;
-				dfs(w);
+				markedArray[curVertex] = true;
+				
+				for (int vertex : G.adj(curVertex))
+					stack.push(vertex);
 			}
 		}
 	}
 
 	/**
-	 * Checks if there is a path from the source vertex to the specified one.
-	 * @param v The vertex to check.
-	 * @return Returns true if there is a path between the two vertices.
+	 * Returns true if this vertex was checked in the search.
+	 * @param v Vertex to check.
+	 * @return Boolean value if this vertex has been checked.
 	 */
-	public boolean hasPathTo(int v) {
-		//If we've visted this vertex we have a path to it.
-		return marked[v];
+	public boolean marked(int v){
+		return markedArray[v];
 	}
 	
-	/**
-	 * Returns the directed path from the source vertex to the supplied vertex.
-	 * @param v The destination vertex.
-	 * @return Returns an iterable list of vertices that's in the path, or returns null if there is no path. 
-	 */
-	public Iterable<Integer> pathTo(int v) {
-		//Check if we have a path.
-		if (!hasPathTo(v))
-			return null;
-		
-		//Create a new stack to store the path to.
-		Stack<Integer> path = new Stack<Integer>();
-		
-		//Start from the end of the path and go backwards.
-		for (int x = v; x != sourceVertex; x = lastVertex[x])
-			path.push(x);
-		
-		//Push the source vertex last.
-		path.push(sourceVertex);
-		return path;
-	}
 }
