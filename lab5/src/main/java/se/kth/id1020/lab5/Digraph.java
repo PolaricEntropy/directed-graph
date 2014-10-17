@@ -47,9 +47,7 @@ public class Digraph
 		for (int v = 0; v < vertices; v++)
 		{
 			for (int w : adj(v))
-			{
 				reversed.addEdge(w, v);
-			}
 		}
 		
 		return reversed;

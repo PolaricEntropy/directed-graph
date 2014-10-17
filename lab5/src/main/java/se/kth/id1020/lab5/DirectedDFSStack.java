@@ -3,10 +3,10 @@ package se.kth.id1020.lab5;
 import edu.princeton.cs.algs4.Stack;
 
 public class DirectedDFSStack {
-
+	
 	private boolean[] marked;  // marked[v] = true if v is reachable from s
 	private int[] lastVertex;  // lastVertex[v] = last vertex on path from s to v
-	private final int s;       // source vertex
+	private final int sourceVertex;
 	private final Digraph G;
 
 	/**
@@ -18,7 +18,7 @@ public class DirectedDFSStack {
 		marked = new boolean[G.numOfVertices()];
 		lastVertex = new int[G.numOfVertices()];
 		this.G = G;
-		this.s = s;
+		this.sourceVertex = s;
 		
 		dfs(s);
 	}
@@ -67,11 +67,11 @@ public class DirectedDFSStack {
 		Stack<Integer> path = new Stack<Integer>();
 		
 		//Start from the end of the path and go backwards.
-		for (int x = v; x != s; x = lastVertex[x])
+		for (int x = v; x != sourceVertex; x = lastVertex[x])
 			path.push(x);
 		
 		//Push the source vertex last.
-		path.push(s);
+		path.push(sourceVertex);
 		return path;
 	}
 }
