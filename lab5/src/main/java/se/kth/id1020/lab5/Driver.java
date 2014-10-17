@@ -37,19 +37,24 @@ public class Driver
     	{
     		int vertex = fs.readInt();
     		
-    		StdOut.println("Searching for: " + vertex);
+    		StdOut.println("Reachable vertices from: " + vertex);
     		
-    		//Create a new search.
+    		//Create a new search and search for the vertex.
         	DirectedDFS search = new DirectedDFS(G, vertex);
         	
+        	//Check if each vertex in the graph was reachable from the one we searched for.
         	for (int v = 0; v < G.numOfVertices(); v++)
-        		if (search.marked(v)) StdOut.print(v + " ");
+        	{
+        		if (search.marked(v))
+        			StdOut.print(v + " ");
+        	}
         	
         	StdOut.println();
     	} 	
     }
     
     public static void searchNonRecursive(String[] args, Digraph G){
+    	
     	//Read our search file.
     	In fs = new In(args[1]);
     	
@@ -63,19 +68,23 @@ public class Driver
     		//Create a new search.
     		DirectedDFSStack search = new DirectedDFSStack(G, vertex);
         	
-    		for (int v = 0; v < G.numOfVertices(); v++) {
-    			if (search.hasPathTo(v)) {
+    		//Check each vertex in the graph.
+    		for (int v = 0; v < G.numOfVertices(); v++)
+    		{
+    			if (search.hasPathTo(v))
+    			{
     				StdOut.printf("%d to %d:  ", vertex, v);
-    				for (int x : search.pathTo(v)) {
-    					if (x == vertex) StdOut.print(x);
-    					else        StdOut.print("-" + x);
+    				for (int x : search.pathTo(v))
+    				{
+    					if (x == vertex)
+    						StdOut.print(x);
+    					else
+    						StdOut.print("-" + x);
     				}
     				StdOut.println();
     			}
-    
-    			else {
+    			else
     				StdOut.printf("%d to %d:  not connected\n", vertex, v);
-    			}
     		}
     	}
     }
@@ -92,7 +101,5 @@ public class Driver
 			if(minList[i] != null)
 				StdOut.printf("%s -> %s\n", i, minList[i]);	
 		}
-    	
-    	StdOut.println(search.toString());
     }
 }

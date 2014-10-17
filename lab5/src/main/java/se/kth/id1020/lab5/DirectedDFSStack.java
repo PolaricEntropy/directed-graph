@@ -7,52 +7,68 @@ public class DirectedDFSStack {
 	private boolean[] marked;  // marked[v] = true if v is reachable from s
 	private int[] edgeTo;      // edgeTo[v] = last edge on path from s to v
 	private final int s;       // source vertex
+	private final Digraph G;
 
 	/**
-	 * Computes a directed path from <tt>s</tt> to every other vertex in digraph <tt>G</tt>.
-	 * @param G the digraph
-	 * @param s the source vertex
+	 * Does a search in the graph what vertices the specified vertex can reach.
+	 * @param G Graph to search.
+	 * @param s Vertex to search for.
 	 */
 	public DirectedDFSStack(Digraph G, int s) {
 		marked = new boolean[G.numOfVertices()];
 		edgeTo = new int[G.numOfVertices()];
+		this.G = G;
 		this.s = s;
-		dfs(G, s);
+		
+		dfs(s);
 	}
 
-	public void dfs(Digraph G, int v) { 
-		marked[v] = true;
-		for (int w : G.adj(v)) {
-			if (!marked[w]) {
-				edgeTo[w] = v;
-				dfs(G, w);
+	/**
+	 * Search all connected vertices of this vertex to see if we can.
+	 * @param vertexToSearch The vertex to search for.
+	 */
+	public void dfs(int vertexToSearch) { 
+		marked[vertexToSearch] = true;
+		
+		//Search all vertices connected to this vertex.
+		for (int w : G.adj(vertexToSearch))
+		{
+			//If we haven't been here before.
+			if (!marked[w])
+			{
+				edgeTo[w] = vertexToSearch;
+				dfs(w);
 			}
 		}
 	}
 
 	/**
-	 * Is there a directed path from the source vertex <tt>s</tt> to vertex <tt>v</tt>?
-	 * @param v the vertex
-	 * @return <tt>true</tt> if there is a directed path from the source
-	 *   vertex <tt>s</tt> to vertex <tt>v</tt>, <tt>false</tt> otherwise
+	 * Checks if there is a path from the source vertex to the specified one.
+	 * @param v The vertex to check.
+	 * @return Returns true if there is a path between the two vertices.
 	 */
 	public boolean hasPathTo(int v) {
 		return marked[v];
 	}
-
-
+	
 	/**
-	 * Returns a directed path from the source vertex <tt>s</tt> to vertex <tt>v</tt>, or
-	 * <tt>null</tt> if no such path.
-	 * @param v the vertex
-	 * @return the sequence of vertices on a directed path from the source vertex
-	 *   <tt>s</tt> to vertex <tt>v</tt>, as an Iterable
+	 * Returns the directed path from the source vertex to the supplied vertex.
+	 * @param v The destination vertex.
+	 * @return Returns an iterable list of vertices that's in the path, or returns null if there is no path. 
 	 */
 	public Iterable<Integer> pathTo(int v) {
-		if (!hasPathTo(v)) return null;
+		//Check if we have a path.
+		if (!hasPathTo(v))
+			return null;
+		
+		//Create a new stack to store the path to.
 		Stack<Integer> path = new Stack<Integer>();
+		
+		//Start from the end of the path and go backwards.
 		for (int x = v; x != s; x = edgeTo[x])
 			path.push(x);
+		
+		//Push the source vertex last.
 		path.push(s);
 		return path;
 	}

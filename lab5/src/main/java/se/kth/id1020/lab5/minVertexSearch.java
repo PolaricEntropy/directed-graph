@@ -26,7 +26,7 @@ public class minVertexSearch {
 			//Don't do it if we've already done this vertex in a previous calculation.
 			if (!marked[i])
 			{
-				//Set to null before we do anything, if this node turns out to not be reachable it will will be null.
+				//Set to null before we do anything, if this vertex turns out to not be reachable it will will be null.
 				minList[i] = null;
 				min(i, i);
 			}
