@@ -2,10 +2,11 @@ package se.kth.id1020.lab5;
 
 public class minVertexSearch {
 
-	Digraph G;
-	boolean[] marked;
-	Integer[] minList;
-
+	
+	private boolean[] marked;
+	private Integer[] minList;
+	private final Digraph G;
+	
 	public minVertexSearch(Digraph G){
 		marked = new boolean[G.numOfVertices()];
 		minList = new Integer[G.numOfVertices()];

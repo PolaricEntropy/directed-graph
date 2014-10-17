@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.Stack;
 public class DirectedDFSStack {
 
 	private boolean[] marked;  // marked[v] = true if v is reachable from s
-	private int[] edgeTo;      // edgeTo[v] = last edge on path from s to v
+	private int[] lastVertex;  // lastVertex[v] = last vertex on path from s to v
 	private final int s;       // source vertex
 	private final Digraph G;
 
@@ -16,7 +16,7 @@ public class DirectedDFSStack {
 	 */
 	public DirectedDFSStack(Digraph G, int s) {
 		marked = new boolean[G.numOfVertices()];
-		edgeTo = new int[G.numOfVertices()];
+		lastVertex = new int[G.numOfVertices()];
 		this.G = G;
 		this.s = s;
 		
@@ -36,7 +36,8 @@ public class DirectedDFSStack {
 			//If we haven't been here before.
 			if (!marked[w])
 			{
-				edgeTo[w] = vertexToSearch;
+				//Set the connected vertex's lastVertex/edge to the vertexToSearch so we know where we came from.
+				lastVertex[w] = vertexToSearch;
 				dfs(w);
 			}
 		}
@@ -48,6 +49,7 @@ public class DirectedDFSStack {
 	 * @return Returns true if there is a path between the two vertices.
 	 */
 	public boolean hasPathTo(int v) {
+		//If we've visted this vertex we have a path to it.
 		return marked[v];
 	}
 	
@@ -65,7 +67,7 @@ public class DirectedDFSStack {
 		Stack<Integer> path = new Stack<Integer>();
 		
 		//Start from the end of the path and go backwards.
-		for (int x = v; x != s; x = edgeTo[x])
+		for (int x = v; x != s; x = lastVertex[x])
 			path.push(x);
 		
 		//Push the source vertex last.

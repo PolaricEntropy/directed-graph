@@ -22,9 +22,9 @@ public class Driver
 
     	//searchRecursive(args, G);
     	
-    	//searchNonRecursive(args, G);
+    	searchNonRecursive(args, G);
     	
-    	smallestVertex(G);
+    	//smallestVertex(G);
     }
     
     public static void searchRecursive(String[] args, Digraph G){
